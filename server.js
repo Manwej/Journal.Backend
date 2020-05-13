@@ -4,6 +4,7 @@ const app = express()
 const mongoose= require('mongoose')
 mongoose.set('useNewUrlParser', true)
 mongoose.connect(process.env.DATABASE_URL, {useUnifiedTopology: true})
+mongoose.set('useCreateIndex', true);
 
 const db= mongoose.connection;
 
