@@ -20,19 +20,18 @@ router.get('/:id',middleware.getUser, (req,res)=>{
     res.json(res.user)
 })
 //Creating one
-router.post('/', async(req,res)=>{
+router.post('/', (req,res)=>{
     const user = new User({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password
     })
-    try{
-        const newUser = await user.save()
+    
+        const newUser =  user.save()
         res.status(201).json(newUser)
-    }catch(err){
-        res.status(400).json({message: err.message})
-        
-    }
+    
+        //res.status(400).json({message: err.message}) 
+    
 })
 //Update one
 router.patch('/:id',middleware.getUser, async (req, res)=>{
