@@ -14,8 +14,20 @@ app.use(express.json())//a. express.json() is a method inbuilt in express to rec
 const userRouter=require('./routes/users')
 const pageRouter= require('./routes/journalpages')
 
+
 app.use('/users', userRouter)
-app.use('/users',pageRouter)
+app.use('/users/', pageRouter)
+
+// db.collection.save(
+   
+//     {
+//         questions:["Name 3 things you are grateful for today.", 
+//         "Name 3 things that would make today perfect.", 
+//         "Write down your daily affirmation.", 
+//         "Name 3 awesome things you did today.", 
+//         "What could you have done better today?"],
+//     }
+//  )
 
 app.listen(5000, ()=>{
     console.log("server has started")

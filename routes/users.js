@@ -1,8 +1,11 @@
 const express = require('express')
 const router=express.Router()
 const User= require('../models/user')
+const mongoose= require('mongoose')
 
 const middleware=require('../middleware')
+const bcrypt = require ("bcrypt")
+const db= mongoose.connection;
 
 //GET all users from /users/
 
@@ -20,19 +23,63 @@ router.get('/:id',middleware.getUser, (req,res)=>{
     res.json(res.user)
 })
 //Creating one
-router.post('/', (req,res)=>{
-    const user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
-    })
-    
-        const newUser =  user.save()
-        res.status(201).json(newUser)
-    
-        //res.status(400).json({message: err.message}) 
-    
-})
+// router.post('/', async (req,res)=>{
+//     const user = new User({
+//         name: req.body.name,
+//         email: req.body.email,
+//         password: req.body.password
+//     })
+//     try{
+//         const newUser =  await user.save()
+//         res.status(201).json(newUser)
+//     }catch(err){
+//         res.status(400).json({message: err.message})
+//     }
+   
+// })
+
+const encryptTest= async (target) =>{
+            bcrypt.hash(target, 5,  (err, encrypted) => {
+                target = encrypted;
+                console.log("the encrypted password: " + target)
+            })  
+            return target;
+
+}
+
+router.post("/", (req,res)=>{
+    //get data from the views and add to mongDB
+    // let test = await encryptTest(req.body.password)
+    // console.log("from the post route, encrypted pw is: " + await encryptTest(req.body.password))
+    // console.log(test)
+//     const user = new User({
+//         name: req.body.name,
+//         email: req.body.email,
+//         password: await encryptTest(req.body.password)
+//     })
+//     try {
+//         //let test = await encryptTest(req.body.password)
+//         const newUser =  await user.save()
+//         res.status(201).json(newUser)
+//     } catch (err){
+//         console.log("from the post route")
+//         res.status(400).json({message: err.message})
+//     }
+// })
+console.log(req.body)
+    bcrypt.hash(req.body.password, 5, function (err,  hash) {
+    new User({
+     name: req.body.name,
+     email: req.body.email,
+     password: hash
+     }).save().then((data) =>{
+      if (data) {
+        res.status(201).json(data)
+      }
+    });
+   });
+  });
+
 //Update one
 router.patch('/:id',middleware.getUser, async (req, res)=>{
     if(req.body.name!=null){
