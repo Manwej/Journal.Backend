@@ -7,6 +7,21 @@ const middleware=require('../middleware')
 const bcrypt = require ("bcrypt")
 const db= mongoose.connection;
 
+const passport = require('passport')
+const flash = require('express-flash')
+const session = require('express-session')
+
+
+
+//authentication routes
+
+router.get('/login', (req, res)=>{
+    res.render('login.ejs')
+})
+router.get('/register', (req, res)=>{
+    res.render('register.ejs')
+})
+
 //GET all users from /users/
 
 router.get('/', async(req,res)=>{
@@ -23,49 +38,8 @@ router.get('/:id',middleware.getUser, (req,res)=>{
     res.json(res.user)
 })
 //Creating one
-// router.post('/', async (req,res)=>{
-//     const user = new User({
-//         name: req.body.name,
-//         email: req.body.email,
-//         password: req.body.password
-//     })
-//     try{
-//         const newUser =  await user.save()
-//         res.status(201).json(newUser)
-//     }catch(err){
-//         res.status(400).json({message: err.message})
-//     }
-   
-// })
 
-const encryptTest= async (target) =>{
-            bcrypt.hash(target, 5,  (err, encrypted) => {
-                target = encrypted;
-                console.log("the encrypted password: " + target)
-            })  
-            return target;
-
-}
-
-router.post("/", (req,res)=>{
-    //get data from the views and add to mongDB
-    // let test = await encryptTest(req.body.password)
-    // console.log("from the post route, encrypted pw is: " + await encryptTest(req.body.password))
-    // console.log(test)
-//     const user = new User({
-//         name: req.body.name,
-//         email: req.body.email,
-//         password: await encryptTest(req.body.password)
-//     })
-//     try {
-//         //let test = await encryptTest(req.body.password)
-//         const newUser =  await user.save()
-//         res.status(201).json(newUser)
-//     } catch (err){
-//         console.log("from the post route")
-//         res.status(400).json({message: err.message})
-//     }
-// })
+router.post("/register", (req,res)=>{
 console.log(req.body)
     bcrypt.hash(req.body.password, 5, function (err,  hash) {
     new User({
@@ -103,20 +77,11 @@ router.patch('/:id',middleware.getUser, async (req, res)=>{
 router.delete('/:id',middleware.getUser, async(req,res)=>{
     try{
         await res.user.remove()
-        res.json({message: "user deleted"})
+         res.json({message: "user deleted"})
     }catch(err){
         res.status(500).json({message: err.message})
     }
 })
-// async function getUser (req,res,next){
-//     let user
-//     try{
-//         user = await User.findById(req.params.id)
-//         if (user==null){return res.status(404).json({message: "cannot find user"})}
-//     }catch(err){
-//         return res.status(500).json({message: err.message})
-//     }
-//     res.user=user;
-//     next()
-// }
+
+
 module.exports=router
