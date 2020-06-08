@@ -6,20 +6,21 @@ const User= require('../models/user')
 const middleware=require('../middleware')
 
 // get all pages
-router.get('/:id/journalpage', async(req,res)=>{
+router.get('/journalpage', async(req,res)=>{  //middleware.checkAuthenticated, 
     try{
         const pages = await Page.find()
+       
         res.send(pages)
     }catch(err){
         res.status(500).json({message: err.message})
     }
 })
 // getting one page
-router.get('/:id/journalpage/:id', middleware.getJournalPage, (req,res)=>{
+router.get('/:id/journalpage/:id', middleware.getJournalPage, middleware.checkAuthenticated, (req,res)=>{
     res.json(res.journalpage)
 })
 //Creating one Page
-router.post('/:id/journalpage', async (req, res)=>{
+router.post('/:id/journalpage', middleware.checkAuthenticated, async (req, res)=>{
     
     const page = new Page({
         //author: req.user.name,
@@ -38,7 +39,7 @@ router.post('/:id/journalpage', async (req, res)=>{
     }
 })
 //update journal page
-router.patch('/:id/journalpage/:id', middleware.getJournalPage, async(req,res)=>{
+router.patch('/:id/journalpage/:id', middleware.getJournalPage, middleware.checkAuthenticated, async(req,res)=>{
     if(req.body.answer1 != null){
         req.journalpage.answer1= req.body.answer1
     }
@@ -66,7 +67,7 @@ router.patch('/:id/journalpage/:id', middleware.getJournalPage, async(req,res)=>
 } )
 
 // DELETE ROute
-router.delete('/:id/journalpage/:id', middleware.getJournalPage, async(req, res)=>{
+router.delete('/:id/journalpage/:id', middleware.getJournalPage, middleware.checkAuthenticated, async(req, res)=>{
     try{
         await res.user.remove()
         res.json({message: "user deleted"})
