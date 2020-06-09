@@ -6,10 +6,11 @@ const journalPageSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    answer1: [{type: String}],
-    answer2:  [{type: String}],
-    affirmation: [{type: String}],
-    answer4:  [{type: String}],
-    answer5:  [{type: String}]
+    question1: {type: String},
+    question2:  {type: String},
+    question3: {type: String},
+    question4:  {type: String},
+    question5:  {type: String},
+    question6:  {type: String}
 })
 module.exports = mongoose.model('JournalPage', journalPageSchema)

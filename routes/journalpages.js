@@ -20,7 +20,7 @@ router.get('/:id/journalpage/:id', middleware.getJournalPage, middleware.checkAu
     res.json(res.journalpage)
 })
 //Creating one Page
-router.post('/:id/journalpage', middleware.checkAuthenticated, async (req, res)=>{
+router.post('/journalpage', middleware.checkAuthenticated, async (req, res)=>{
     
     const page = new Page({
         //author: req.user.name,
@@ -39,7 +39,7 @@ router.post('/:id/journalpage', middleware.checkAuthenticated, async (req, res)=
     }
 })
 //update journal page
-router.patch('/:id/journalpage/:id', middleware.getJournalPage, middleware.checkAuthenticated, async(req,res)=>{
+router.patch('/journalpage/:id', middleware.getJournalPage, middleware.checkAuthenticated, async(req,res)=>{
     if(req.body.answer1 != null){
         req.journalpage.answer1= req.body.answer1
     }
