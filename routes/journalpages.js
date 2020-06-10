@@ -20,15 +20,16 @@ router.get('/:id/journalpage/:id', middleware.getJournalPage, middleware.checkAu
     res.json(res.journalpage)
 })
 //Creating one Page
-router.post('/journalpage', middleware.checkAuthenticated, async (req, res)=>{
-    
+router.post('/journalpage',  async (req, res)=>{ //middleware.checkAuthenticated,
+    console.log(req.body)
     const page = new Page({
         //author: req.user.name,
-        answer1: req.body.answer1,
-        answer2:  req.body.answer2,
-        affirmation: req.body.affirmation,
-        answer4:  req.body.answer4,
-        answer5:  req.body.answer5
+        question1:  req.body.question1,
+        question2:  req.body.question2,
+        question3:  req.body.question3,
+        question4:  req.body.question4,
+        question5:  req.body.question5,
+        question6:  req.body.question6
     })
     try{
         const newPage = await page.save()
