@@ -6,14 +6,21 @@ const User= require('../models/user')
 const middleware=require('../middleware')
 
 // get all pages
-router.get('/journalpage', async(req,res)=>{  //middleware.checkAuthenticated, 
-    try{
-        const pages = await Page.find()
-       
-        res.send(pages)
-    }catch(err){
-        res.status(500).json({message: err.message})
-    }
+router.get('/journalpage', (req,res)=>{  //middleware.checkAuthenticated, 
+    Page
+    .find({})
+    .then((files) => {
+      res.send(files);
+    })
+    .catch((err) => console.log(err));
+    
+    
+    // try{
+    //     const pages = await Page.find()
+    //     res.send(pages)
+    // }catch(err){
+    //     res.status(500).json({message: err.message})
+    // }
 })
 // getting one page
 router.get('/:id/journalpage/:id', middleware.getJournalPage, middleware.checkAuthenticated, (req,res)=>{

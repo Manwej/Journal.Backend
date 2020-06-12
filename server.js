@@ -43,7 +43,7 @@ app.use(passport.session())
 const userRouter=require('./routes/users')
 const pageRouter= require('./routes/journalpages')
 app.use('/users', userRouter)
-app.use('/', pageRouter)
+app.use(pageRouter)
 app.use(function(req, res, next) {
     res.setHeader("Content-Type", "application/json");
     next();
