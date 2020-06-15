@@ -63,9 +63,9 @@ app.post('/login', middleware.checkNotAuthenticated, passport.authenticate('loca
         console.log(req.body)
     }
 )
-app.get('/register', middleware.checkNotAuthenticated, (req,res)=>{
-    res.render('register.ejs')
-})
+// app.get('/register', middleware.checkNotAuthenticated, (req,res)=>{
+//     res.render('register.ejs')
+// })
 
 app.delete('/logout', (req,res)=>{
     req.logOut()
