@@ -1,5 +1,6 @@
 const User =require('../models/user')
 const Page =require('../models/journalpage')
+const jwt=require('jsonwebtoken')
 
 
 let middlewareObj ={}
@@ -16,7 +17,6 @@ let middlewareObj ={}
     next()
 }
 middlewareObj.getJournalPage =async (req,res, next)=>{
-    let getJournalPage
     try{
         journalpage = await Page.findById(req.params.id)
         if(journalpage==null){return res.status(404).json({message: "cannot find journalpage"})}
@@ -39,5 +39,23 @@ middlewareObj.checkNotAuthenticated=(req,res,next)=>{
   }
   next()
 }
+middlewareObj.auth=(req,res,next)=>{
+  const token = req.header('x-auth-token');
+
+  // Check for token
+  if (!token)
+    return res.status(401).json({ msg: 'No token, authorizaton denied' });
+
+  try {
+    // Verify token
+    const decoded = jwt.verify(token, "hello");
+    // Add user from payload
+    req.user = decoded;
+    next();
+  } catch (e) {
+    res.status(400).json({ msg: 'Token is not valid' });
+  }
+}
+
 
 module.exports = middlewareObj;
