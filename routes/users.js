@@ -88,6 +88,7 @@ router.post("/login", async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        auth: true,
       },
     });
   } catch (e) {
@@ -105,42 +106,53 @@ router.get("/user", middleware.auth, async (req, res) => {
   }
 });
 
-//Update one
-router.patch(
-  "/:id",
-  middleware.getUser,
-  middleware.checkAuthenticated,
-  async (req, res) => {
-    if (req.body.name != null) {
-      res.user.name = req.body.name;
-    }
-    if (req.body.email != null) {
-      res.user.email = req.body.email;
-    }
-    if (req.body.password != null) {
-      res.user.password = req.body.password;
-    }
-    try {
-      const updatedUser = await res.user.save();
-      res.json(updatedUser);
-    } catch (err) {
-      res.status(400).json({ message: err.message });
-    }
-  }
-);
-// deleting one
-router.delete(
-  "/:id",
-  middleware.getUser,
-  middleware.checkAuthenticated,
-  async (req, res) => {
-    try {
-      await res.user.remove();
-      res.json({ message: "user deleted" });
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  }
-);
+// LOGOUT in BACKEND not Yet implemented
+// router.get("/logout", (req, res) => {
+//   console.log("logged Out");
+//   User.findOne({ _id: req.user.id }).then((user) => {
+//     user.auth = false;
+//     user.save();
+//     res.json("logged out");
+//     console.log("logged Out");
+//   });
+// });
+
+// //Update one
+// router.patch(
+//   "/:id",
+//   middleware.getUser,
+//   middleware.checkAuthenticated,
+//   async (req, res) => {
+//     if (req.body.name != null) {
+//       res.user.name = req.body.name;
+//     }
+//     if (req.body.email != null) {
+//       res.user.email = req.body.email;
+//     }
+//     if (req.body.password != null) {
+//       res.user.password = req.body.password;
+//     }
+//     try {
+//       const updatedUser = await res.user.save();
+//       res.json(updatedUser);
+//     } catch (err) {
+//       res.status(400).json({ message: err.message });
+//     }
+//   }
+// );
+// // deleting one
+// router.delete(
+//   "/:id",
+//   middleware.getUser,
+//   middleware.checkAuthenticated,
+//   async (req, res) => {
+//     try {
+//       await res.user.remove();
+//       res.json({ message: "user deleted" });
+//     } catch (err) {
+//       res.status(500).json({ message: err.message });
+//     }
+//   }
+// );
 
 module.exports = router;
